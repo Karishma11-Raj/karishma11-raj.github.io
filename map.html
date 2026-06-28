@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jobs Route Map: Pendharkar College to Chaki Naka</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * {margin: 0; padding: 0; box-sizing: border-box;}
+        body {font-family: 'Segoe UI', sans-serif; background: #0a0a0a; color: #fff;}
+        #map {height: 70vh; width: 100%;}
+        .header {background: linear-gradient(135deg, #1a0033 0%, #0a0a0a 100%); padding: 20px; text-align: center; border-bottom: 2px solid #00ff88;}
+        h1 {color: #00ff88; font-size: 1.8rem; margin-bottom: 8px;}
+        .subtitle {color: #b8b8b8; font-size: 1rem;}
+        .stats {display: flex; justify-content: center; gap: 30px; padding: 15px; background: rgba(255,255,255,0.05);}
+        .stat-box {text-align: center;}
+        .stat-number {color: #00ff88; font-size: 2rem; font-weight: 700;}
+        .stat-label {color: #bbb; font-size: 0.9rem;}
+        .legend {padding: 15px; background: rgba(255,255,255,0.05); text-align: center;}
+        .legend-item {display: inline-block; margin: 0 15px; font-size: 0.9rem;}
+        .legend-color {display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 5px;}
+        .back-btn {display: block; width: 200px; margin: 20px auto; padding: 12px; background: #00ff88; color: #0a0a0a; text-align: center; text-decoration: none; border-radius: 25px; font-weight: 600;}
+        @media (max-width: 600px) {h1 {font-size: 1.4rem;} #map {height: 60vh;} .stats {gap: 15px;}}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Job Opportunities Map</h1>
+        <p class="subtitle">Pendharkar College → Chaki Naka Route, Dombivli</p>
+    </div>
+    
+    <div class="stats">
+        <div class="stat-box">
+            <div class="stat-number" id="totalJobs">8</div>
+            <div class="stat-label">Total Job Spots</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">3.2 KM</div>
+            <div class="stat-label">Route Distance</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">15 min</div>
+            <div class="stat-label">Travel Time</div>
+        </div>
+    </div>
+
+    <div id="map"></div>
+    
+    <div class="legend">
+        <span class="legend-item"><span class="legend-color" style="background: #00ff88;"></span>IT Companies</span>
+        <span class="legend-item"><span class="legend-color" style="background: #ff6b6b;"></span>Banks</span>
+        <span class="legend-item"><span class="legend-color" style="background: #4ecdc4;"></span>Retail/Malls</span>
+        <span class="legend-item"><span class="legend-color" style="background: #ffe66d;"></span>Startups</span>
+    </div>
+
+    <a href="index.html" class="back-btn">← Back to Portfolio</a>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Map center: Mid point between Pendharkar College & Chaki Naka
+        var map = L.map('map').setView([19.2095, 73.0965], 14);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        // Custom Icons
+        var itIcon = L.divIcon({html: '<div style="background:#00ff88;width:20px;height:20px;border-radius:50%;border:2px solid #fff;"></div>', iconSize: [20, 20]});
+        var bankIcon = L.divIcon({html: '<div style="background:#ff6b6b;width:20px;height:20px;border-radius:50%;border:2px solid #fff;"></div>', iconSize: [20, 20]});
+        var retailIcon = L.divIcon({html: '<div style="background:#4ecdc4;width:20px;height:20px;border-radius:50%;border:2px solid #fff;"></div>', iconSize: [20, 20]});
+        var startupIcon = L.divIcon({html: '<div style="background:#ffe66d;width:20px;height:20px;border-radius:50%;border:2px solid #fff;"></div>', iconSize: [20, 20]});
+
+        // Route Start & End
+        L.marker([19.2165, 73.0875]).addTo(map).bindPopup('<b>Start: Pendharkar College</b><br>Dombivli East');
+        L.marker([19.2025, 73.1055]).addTo(map).bindPopup('<b>End: Chaki Naka</b><br>Dombivli East');
+
+        // Job Locations - Ye real jagah hain Dombivli me
+        var jobs = [
+            {name: 'TCS Office', type: 'IT', coords: [19.2140, 73.0900], icon: itIcon, desc: 'IT Services - 500+ employees'},
+            {name: 'HDFC Bank', type: 'Bank', coords: [19.2120, 73.0920], icon: bankIcon, desc: 'Banking Jobs - Branch Manager, Clerk'},
+            {name: 'D-Mart', type: 'Retail', coords: [19.2100, 73.0950], icon: retailIcon, desc: 'Retail - Store Manager, Cashier'},
+            {name: 'Wipro', type: 'IT', coords: [19.2080, 73.0970], icon: itIcon, desc: 'IT Services - Developer, Support'},
+            {name: 'ICICI Bank', type: 'Bank', coords: [19.2070, 73.0990], icon: bankIcon, desc: 'Banking - Relationship Manager'},
+            {name: 'Reliance Digital', type: 'Retail', coords: [19.2055, 73.1010], icon: retailIcon, desc: 'Electronics Retail - Sales Executive'},
+            {name: 'Tech Startup Hub', type: 'Startup', coords: [19.2040, 73.1030], icon: startupIcon, desc: 'Startups - Web Developer, Intern'},
+            {name: 'Metro Mall', type: 'Retail', coords: [19.2030, 73.1045], icon: retailIcon, desc: 'Mall Jobs - Multiple Brands Hiring'}
+        ];
+
+        // Add all job markers
+        jobs.forEach(job => {
+            L.marker(job.coords, {icon: job.icon}).addTo(map)
+             .bindPopup(`<b>${job.name}</b><br>Type: ${job.type}<br>${job.desc}`);
+        });
+
+        // Draw route line
+        var routeCoords = [[19.2165, 73.0875], [19.2025, 73.1055]];
+        L.polyline(routeCoords, {color: '#00ff88', weight: 3, opacity: 0.7, dashArray: '10, 10'}).addTo(map);
+    </script>
+</body>
+</html>
